@@ -1,11 +1,16 @@
 const request = require('request');
 const shake = require('./shake');
+const spin = require('./spin');
+
+const effects = { spin, shake };
 
 exports.handler = function(event, context, callback) {
   console.log(event);
 
-  if (event.queryStringParameters.input) {
-    shake(request(event.queryStringParameters.input))
+  const effect = event.queryStringParameters.effect || 'shake';
+
+  if (event.queryStringParameters.input && effects[effect]) {
+    effects[effect](request(event.queryStringParameters.input))
       .then(buffer => {
         var response = {
           statusCode: 200,
