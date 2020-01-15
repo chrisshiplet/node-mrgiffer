@@ -21,7 +21,7 @@ module.exports = function pulse(inputStream, outputStream) {
 
       return newImage(width, height)
         .then(blank => {
-          const encoder = new GIFEncoder(height, width);
+          const encoder = new GIFEncoder(width, height);
 
           const frames = [];
           let transparent = null;
@@ -36,7 +36,7 @@ module.exports = function pulse(inputStream, outputStream) {
               newFrame = newFrame.blit(
                 nextFrame,
                 (width - nextFrame.bitmap.width) / 2,
-                (height - nextFrame.bitmap.width) / 2
+                (height - nextFrame.bitmap.height) / 2
               );
             } else {
               newFrame = nextFrame;
