@@ -1,9 +1,10 @@
 const assert = require('assert');
 const fs = require('fs');
+const pulse = require('./pulse');
 const shake = require('./shake');
 const spin = require('./spin');
 
-const effects = { spin, shake };
+const effects = { pulse, spin, shake };
 
 try {
   const input = process.argv[2];
