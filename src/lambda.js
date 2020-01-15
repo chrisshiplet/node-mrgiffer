@@ -1,8 +1,9 @@
 const request = require('request');
+const pulse = require('./pulse');
 const shake = require('./shake');
 const spin = require('./spin');
 
-const effects = { spin, shake };
+const effects = { pulse, spin, shake };
 
 exports.handler = function(event, context, callback) {
   console.log(event);
