@@ -2,11 +2,7 @@ const request = require("request");
 const fs = require("fs");
 const path = require("path");
 
-const pulse = require("./pulse");
-const shake = require("./shake");
-const spin = require("./spin");
-
-const effects = { pulse, spin, shake };
+const effects = require('./effects');
 
 exports.handler = function(event, context, callback) {
   console.log(event);
@@ -17,10 +13,9 @@ exports.handler = function(event, context, callback) {
 
   if (
     event.queryStringParameters &&
-    event.queryStringParameters.input &&
-    effects[effect]
+    event.queryStringParameters.input
   ) {
-    effects[effect](request(event.queryStringParameters.input)).then(buffer => {
+    effects(request(event.queryStringParameters.input), null, effect).then(buffer => {
       const response = {
         statusCode: 200,
         headers: {

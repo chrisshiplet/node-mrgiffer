@@ -1,10 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
-const pulse = require('./pulse');
-const shake = require('./shake');
-const spin = require('./spin');
 
-const effects = { pulse, spin, shake };
+const effects = require('./effects');
 
 try {
   const input = process.argv[2];
@@ -13,7 +10,7 @@ try {
   assert(input, 'input filename argument expected');
   assert(output, 'output filename argument expected');
 
-  effects[effect](fs.createReadStream(input), fs.createWriteStream(output));
+  effects(fs.createReadStream(input), fs.createWriteStream(output), effect);
 } catch (e) {
   console.error(e.message || e);
 }
