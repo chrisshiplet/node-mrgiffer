@@ -5,6 +5,7 @@ const streamToBuffer = require('../util/streamToBuffer');
 const bufferToStream = require('../util/bufferToStream');
 const newImage = require('../util/newImage');
 
+const explode = require('./explode');
 const pulse = require('./pulse');
 const shake = require('./shake');
 const spin = require('./spin');
@@ -12,7 +13,7 @@ const spin = require('./spin');
 const FRAMES = 16;
 const MAX_DIMENSION = 512;
 
-module.exports = async (inputStream, outputStream, effect = 'pulse|shake|spin') => {
+module.exports = async (inputStream, outputStream, effect = 'explode|pulse|shake|spin') => {
   const inputBuffer = await streamToBuffer(inputStream);
   const image = await Jimp.read(inputBuffer);
 
@@ -30,6 +31,10 @@ module.exports = async (inputStream, outputStream, effect = 'pulse|shake|spin') 
 
   for (var i = 0; i < FRAMES; i++) {
     let nextFrame = image.clone();
+
+    if (effect.indexOf('explode') !== -1) {
+      nextFrame = await explode(nextFrame, blank.opacity(0).clone(), image, i ,height, width);
+    }
 
     if (effect.indexOf('pulse') !== -1) {
       nextFrame = pulse(nextFrame, blank.opacity(0).clone(), i, height, width);
