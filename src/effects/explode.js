@@ -1,18 +1,5 @@
 const getExplosionFrame = require('../util/getExplosionFrame');
 
-const cropRotate = (
-  src,
-  cropX,
-  cropY,
-  cropHeight,
-  cropWidth
-) => src.clone().crop(
-  cropX,
-  cropY,
-  cropWidth,
-  cropHeight
-);
-
 module.exports = async (nextFrame, blank, original, index, height, width) => {
   let explosionFrame;
   let cropHeight;
@@ -96,43 +83,35 @@ module.exports = async (nextFrame, blank, original, index, height, width) => {
       );
   }
 
-  const q1 = cropRotate(
-    original,
+  const q1 = original.clone().crop(
     cropWidth,
     cropHeight,
     width / 2 - cropWidth,
-    height / 2 - cropHeight,
-    315
+    height / 2 - cropHeight
   );
-  const q2 = cropRotate(
-    original,
+  const q2 = original.clone().crop(
     width / 2,
     cropHeight,
     width / 2 - cropWidth,
-    height / 2 - cropHeight,
-    45
+    height / 2 - cropHeight
   );
-  const q3 = cropRotate(
-    original,
+  const q3 = original.clone().crop(
     0,
     height / 2 + cropHeight,
     width / 2 - cropWidth,
-    height / 2 - cropHeight,
-    225
+    height / 2 - cropHeight
   );
-  const q4 = cropRotate(
-    original,
+  const q4 = original.clone().crop(
     width / 2 + cropWidth,
     height / 2 + cropHeight,
     width / 2 - cropWidth,
-    height / 2 - cropHeight,
-    135
+    height / 2 - cropHeight
   );
 
-  return blank.blit(q1, 0, 0)
-    .blit(q2, width / 2 + cropWidth, 0)
-    .blit(q3, 0, height / 2 + cropHeight)
-    .blit(q4, width / 2 + cropWidth, height / 2 + cropHeight)
+  return blank.composite(q1, 0, 0)
+    .composite(q2, width / 2 + cropWidth, 0)
+    .composite(q3, 0, height / 2 + cropHeight)
+    .composite(q4, width / 2 + cropWidth, height / 2 + cropHeight)
     .composite(
       explosionFrame,
       (width / 2) - (explosionFrame.bitmap.width / 2),
